@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simulation KEPLER 452-B</title>
+    <title>Simulation KEPLER 542-B</title>
     <script src="https://aframe.io/releases/1.3.0/aframe.min.js"></script>
     <style>
       body { margin: 0; }
@@ -23,7 +23,54 @@
   <body>
 
     <a-scene>
-        
+
+        <a-scene>
+
+          <a-scene>
+            <!-- Montañas distribuidas alrededor del usuario en un círculo con hueco en el frente -->
+            <a-assets>
+              <!-- Modelo GLTF -->
+              <a-asset-item id="modelo-glb" src="paramount_mountain_2012.glb"></a-asset-item>
+            </a-assets>
+          
+            <a-entity>
+              <!-- Generar 30 montañas alrededor del usuario -->
+              <script>
+                const numberOfMountains = 30; // Número total de montañas
+                const radius = 100; // Radio del círculo donde estarán las montañas
+                const frontAngleMin = -; // Ángulo mínimo del hueco frontal
+                const frontAngleMax = 150; // Ángulo máximo del hueco frontal
+                const scene = document.querySelector('a-scene');
+          
+                for (let i = 0; i < numberOfMountains; i++) {
+                  // Calcular el ángulo en radianes
+                  const angle = (i / numberOfMountains) * 360;
+                  
+                  // Evitar las montañas en el frente
+                  if (angle >= frontAngleMin && angle <= frontAngleMax) {
+                    continue;
+                  }
+          
+                  // Convertir ángulo a radianes
+                  const radians = angle * (Math.PI / 180);
+          
+                  // Calcular la posición X y Z usando el radio
+                  const x = radius * Math.cos(radians);
+                  const z = radius * Math.sin(radians);
+          
+                  // Crear una entidad para la montaña
+                  const mountain = document.createElement('a-entity');
+                  mountain.setAttribute('gltf-model', '#modelo-glb');
+                  mountain.setAttribute('position', `${x} 0 ${z}`);
+                  mountain.setAttribute('scale', '2 2 2');
+          
+                  // Agregar la montaña a la escena
+                  scene.appendChild(mountain);
+                }
+              </script>
+            </a-entity>
+          </a-scene>
+          
         <!-- Cielo oscuro -->
         <a-sky color="#001d3d"></a-sky>
       
@@ -132,3 +179,4 @@
 
   </body>
 </html>
+
